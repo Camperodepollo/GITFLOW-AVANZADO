@@ -9,7 +9,7 @@ jobs:
     runs-on: [self-hosted, Windows, X64]
     steps:
       - name: Comparar el secret con la variable local
-        shell: powershell
+        shell: shell: powershell -NoProfile -ExecutionPolicy Bypass -File {0}
         env:
           TOKEN_GITHUB: ${{ secrets.DEV_TOKEN }}
         run: |
