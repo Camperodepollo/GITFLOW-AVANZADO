@@ -1,0 +1,26 @@
+name: Prueba de tokens
+
+on: push
+
+permissions: {}
+
+jobs:
+  comparar-token:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Comparar el secret con la variable local
+        shell: powershell
+        env:
+          TOKEN_GITHUB: ${{ secrets.DEV_TOKEN }}
+        run: |
+          if ([string]::IsNullOrEmpty($env:TOKEN_GITHUB) -or [string]::IsNullOrEmpty($env:LOCAL_DEV_TOKEN)) {
+            Write-Host "ERROR: falta alguno de los valores."
+            exit 1
+          }
+
+          if ($env:TOKEN_GITHUB -ceq $env:LOCAL_DEV_TOKEN) {
+            Write-Host "CORRECTO: los valores coinciden."
+          } else {
+            Write-Host "ERROR: los valores no coinciden."
+            exit 1
+          }
